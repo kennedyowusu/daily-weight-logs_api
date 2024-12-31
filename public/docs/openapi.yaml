@@ -1,0 +1,748 @@
+openapi: 3.0.3
+info:
+  title: Laravel
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/v1/admin/users:
+    get:
+      summary: 'Display a list of all users.'
+      operationId: displayAListOfAllUsers
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n \"data\": [\n   {\n     \"id\": 1,\n     \"name\": \"John Doe\",\n     \"username\": \"johndoe\",\n     \"email\": \"johndoe@example.com\",\n     \"role\": \"user\",\n     ...\n   }\n ],\n \"links\": {\n     \"first\": \"http://example.com?page=1\",\n     ...\n }\n}"
+      tags:
+        - Admin
+      security: []
+  '/api/v1/admin/users/{user_id}':
+    get:
+      summary: 'View details of a specific user.'
+      operationId: viewDetailsOfASpecificUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"name\": \"John Doe\",\n  \"username\": \"johndoe\",\n  ...\n}"
+      tags:
+        - Admin
+      security: []
+    delete:
+      summary: 'Delete a user.'
+      operationId: deleteAUser
+      description: ''
+      parameters: []
+      responses:
+        204:
+          description: ''
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cannot delete an admin account.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Cannot delete an admin account.'
+      tags:
+        - Admin
+      security: []
+    parameters:
+      -
+        in: path
+        name: user_id
+        description: 'The ID of the user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: user
+        description: 'The ID of the user.'
+        example: 10
+        required: true
+        schema:
+          type: integer
+  '/api/v1/admin/users/{user_id}/promote':
+    put:
+      summary: 'Promote a user to admin.'
+      operationId: promoteAUserToAdmin
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'User promoted to admin successfully.'
+                properties:
+                  message:
+                    type: string
+                    example: 'User promoted to admin successfully.'
+      tags:
+        - Admin
+      security: []
+    parameters:
+      -
+        in: path
+        name: user_id
+        description: 'The ID of the user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: user
+        description: 'The ID of the user to promote.'
+        example: 17
+        required: true
+        schema:
+          type: integer
+  /api/v1/admin/health-data:
+    get:
+      summary: 'View all health data.'
+      operationId: viewAllHealthData
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n \"data\": [\n   {\n     \"id\": 1,\n     \"user_id\": 1,\n     \"height\": 170,\n     ...\n   }\n ]\n}"
+      tags:
+        - Admin
+      security: []
+  '/api/v1/admin/health-data/{healthData_id}':
+    get:
+      summary: 'View a specific health data record.'
+      operationId: viewASpecificHealthDataRecord
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"user_id\": 1,\n  ...\n}"
+      tags:
+        - Admin
+      security: []
+    delete:
+      summary: 'Delete a health data record.'
+      operationId: deleteAHealthDataRecord
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Health data record deleted successfully.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Health data record deleted successfully.'
+      tags:
+        - Admin
+      security: []
+    parameters:
+      -
+        in: path
+        name: healthData_id
+        description: 'The ID of the healthData.'
+        example: 3
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: healthData
+        description: 'The ID of the health data record.'
+        example: 16
+        required: true
+        schema:
+          type: integer
+  /api/v1/admin/weight-logs:
+    get:
+      summary: 'View all weight logs for a user.'
+      operationId: viewAllWeightLogsForAUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n \"data\": [\n   {\n     \"id\": 1,\n     \"user_id\": 1,\n     \"weight\": 70,\n     ...\n   }\n ]\n}"
+      tags:
+        - Admin
+      security: []
+    parameters:
+      -
+        in: path
+        name: user
+        description: 'The ID of the user.'
+        example: 12
+        required: true
+        schema:
+          type: integer
+  '/api/v1/admin/weight-logs/{weightLog}':
+    get:
+      summary: 'View a specific weight log.'
+      operationId: viewASpecificWeightLog
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"weight\": 70,\n  ...\n}"
+      tags:
+        - Admin
+      security: []
+    delete:
+      summary: 'Delete a weight log.'
+      operationId: deleteAWeightLog
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Weight log deleted successfully.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Weight log deleted successfully.'
+      tags:
+        - Admin
+      security: []
+    parameters:
+      -
+        in: path
+        name: weightLog
+        description: 'The ID of the weight log.'
+        example: 20
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: user
+        description: 'The ID of the user.'
+        example: 20
+        required: true
+        schema:
+          type: integer
+  /api/v1/register:
+    post:
+      summary: 'Register a new user.'
+      operationId: registerANewUser
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"message\": \"Registration successful.\",\n  ...\n}"
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the user.'
+                  example: 'John Doe'
+                  nullable: false
+                username:
+                  type: string
+                  description: 'The username.'
+                  example: johndoe
+                  nullable: false
+                country:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: qvifykhqhxluiehv
+                  nullable: true
+                email:
+                  type: string
+                  description: 'The email address.'
+                  example: johndoe@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: 'The password.'
+                  example: password
+                  nullable: false
+                password_confirmation:
+                  type: string
+                  description: 'The password confirmation.'
+                  example: password
+                  nullable: false
+              required:
+                - name
+                - username
+                - email
+                - password
+                - password_confirmation
+      security: []
+  /api/v1/login:
+    post:
+      summary: 'Login a user.'
+      operationId: loginAUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"message\": \"Login successful.\",\n  ...\n}"
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Invalid credentials.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid credentials.'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The email address.'
+                  example: johndoe@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: 'The password.'
+                  example: password
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/v1/logout:
+    post:
+      summary: 'Logout the authenticated user.'
+      operationId: logoutTheAuthenticatedUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Logout successful.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Logout successful.'
+      tags:
+        - Authentication
+      security: []
+  /api/v1/health-data:
+    post:
+      summary: 'Store a new health data record.'
+      operationId: storeANewHealthDataRecord
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"user_id\": 1,\n  \"height\": 170,\n  ...\n}"
+      tags:
+        - 'Health Data'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                height:
+                  type: number
+                  description: "The user's height in centimeters."
+                  example: 170.0
+                  nullable: false
+                weight_goal:
+                  type: string
+                  description: 'The weight goal.'
+                  example: gain
+                  nullable: false
+              required:
+                - height
+                - weight_goal
+      security: []
+  '/api/v1/health-data/{healthData_id}':
+    get:
+      summary: 'Display a specific health data record.'
+      operationId: displayASpecificHealthDataRecord
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"user_id\": 1,\n  ...\n}"
+      tags:
+        - 'Health Data'
+      security: []
+    put:
+      summary: 'Update a health data record.'
+      operationId: updateAHealthDataRecord
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"user_id\": 1,\n  ...\n}"
+      tags:
+        - 'Health Data'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                weight_goal:
+                  type: string
+                  description: "The user's weight goal."
+                  example: gain
+                  nullable: false
+                  enum:
+                    - gain
+                    - lose
+                    - maintain
+                height:
+                  type: number
+                  description: 'The updated height.'
+                  example: 175.0
+                  nullable: false
+      security: []
+    delete:
+      summary: 'Delete a health data record.'
+      operationId: deleteAHealthDataRecord
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Health data deleted successfully.'
+                properties:
+                  message:
+                    type: string
+                    example: 'Health data deleted successfully.'
+      tags:
+        - 'Health Data'
+      security: []
+    parameters:
+      -
+        in: path
+        name: healthData_id
+        description: 'The ID of the healthData.'
+        example: 3
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: healthData
+        description: 'The ID of the health data record.'
+        example: 4
+        required: true
+        schema:
+          type: integer
+  /api/v1/profile:
+    get:
+      summary: "View the authenticated user's profile."
+      operationId: viewTheAuthenticatedUsersProfile
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"name\": \"John Doe\",\n  ...\n}"
+      tags:
+        - User
+      security: []
+    delete:
+      summary: "Delete the authenticated user's account."
+      operationId: deleteTheAuthenticatedUsersAccount
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'User deleted successfully.'
+                properties:
+                  message:
+                    type: string
+                    example: 'User deleted successfully.'
+      tags:
+        - User
+      security: []
+  /api/v1/weight-logs:
+    get:
+      summary: 'List all weight logs.'
+      operationId: listAllWeightLogs
+      description: ''
+      parameters:
+        -
+          in: query
+          name: time_of_day
+          description: 'Filter logs by morning or evening.'
+          example: morning
+          required: false
+          schema:
+            type: string
+            description: 'Filter logs by morning or evening.'
+            example: morning
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n \"data\": [\n   {\n     \"id\": 1,\n     \"weight\": 75,\n     \"time_of_day\": \"morning\",\n     ...\n   }\n ]\n}"
+      tags:
+        - 'Weight Logs'
+      security: []
+    post:
+      summary: 'Create a new weight log.'
+      operationId: createANewWeightLog
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"weight\": 75.5,\n  ...\n}"
+      tags:
+        - 'Weight Logs'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                weight:
+                  type: number
+                  description: 'The weight of the user.'
+                  example: 75.5
+                  nullable: false
+                time_of_day:
+                  type: string
+                  description: 'Morning or evening.'
+                  example: morning
+                  nullable: false
+                logged_at:
+                  type: datetime
+                  description: 'The time the weight was logged.'
+                  example: '2024-12-31 08:00:00'
+                  nullable: false
+              required:
+                - weight
+                - time_of_day
+                - logged_at
+      security: []
+  '/api/v1/weight-logs/{weightLog_id}':
+    get:
+      summary: 'Show a specific weight log.'
+      operationId: showASpecificWeightLog
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"weight\": 75.5,\n  ...\n}"
+      tags:
+        - 'Weight Logs'
+      security: []
+    put:
+      summary: 'Update a specific weight log.'
+      operationId: updateASpecificWeightLog
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 1,\n  \"weight\": 76.5,\n  ...\n}"
+      tags:
+        - 'Weight Logs'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                weight:
+                  type: number
+                  description: 'The updated weight.'
+                  example: 76.5
+                  nullable: false
+                time_of_day:
+                  type: string
+                  description: 'The time of day when the weight was logged.'
+                  example: morning
+                  nullable: false
+                  enum:
+                    - morning
+                    - evening
+                logged_at:
+                  type: string
+                  description: 'The date and time when the weight was logged. Must be a valid date.'
+                  example: '2021-08-01 08:00:00'
+                  nullable: false
+              required:
+                - time_of_day
+                - logged_at
+      security: []
+    delete:
+      summary: 'Delete a specific weight log.'
+      operationId: deleteASpecificWeightLog
+      description: ''
+      parameters: []
+      responses:
+        204:
+          description: ''
+      tags:
+        - 'Weight Logs'
+      security: []
+    parameters:
+      -
+        in: path
+        name: weightLog_id
+        description: 'The ID of the weightLog.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: weightLog
+        description: 'The ID of the weight log.'
+        example: 4
+        required: true
+        schema:
+          type: integer
+tags:
+  -
+    name: Admin
+    description: "\nEndpoints for managing users, health data, and weight logs as an admin."
+  -
+    name: Authentication
+    description: "\nEndpoints for user authentication."
+  -
+    name: 'Health Data'
+    description: "\nEndpoints for managing health data."
+  -
+    name: User
+    description: "\nEndpoints for managing user profiles."
+  -
+    name: 'Weight Logs'
+    description: "\nEndpoints for managing weight logs."
