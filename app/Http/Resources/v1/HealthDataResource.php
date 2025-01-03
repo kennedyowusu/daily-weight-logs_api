@@ -19,6 +19,7 @@ class HealthDataResource extends JsonResource
             'height' => number_format($this->height, 2) . ' m',
             'weight_goal' => $this->weight_goal,
             'user_id' => [
+                'id' => $this->user->id,
                 'name' => $this->user->name,
             ]
         ];
