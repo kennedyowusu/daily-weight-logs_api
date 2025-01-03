@@ -10,8 +10,8 @@ use App\Http\Middleware\AdminMiddleware;
 
 Route::prefix('v1')->group(function () {
     // Public routes
-    Route::post('register', [AuthenticationController::class, 'registerUser']);
-    Route::post('login', [AuthenticationController::class, 'loginUser']);
+    Route::post('/register', [AuthenticationController::class, 'registerUser']);
+    Route::post('/login', [AuthenticationController::class, 'loginUser']);
 
     // Protected routes for authenticated users
     Route::middleware('auth:sanctum')->group(function () {
