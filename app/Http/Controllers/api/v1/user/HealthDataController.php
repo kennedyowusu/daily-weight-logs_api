@@ -8,6 +8,7 @@ use App\Http\Requests\v1\UpdateHealthDataRequest;
 use App\Http\Resources\v1\HealthDataResource;
 use App\Models\HealthData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Health Data
@@ -50,6 +51,11 @@ class HealthDataController extends Controller
      */
     public function show(HealthData $healthData, Request $request)
     {
+        Log::info('User attempting to view health data', [
+            'user_id' => $request->user()->id,
+            'health_data_id' => $healthData->id,
+        ]);
+
         if ($request->user()->cannot('view', $healthData)) {
             return response()->json(['message' => 'Unauthorized.'], 403);
         }
@@ -97,4 +103,16 @@ class HealthDataController extends Controller
         $healthData->delete();
         return response()->json(['message' => 'Health data deleted successfully.'], 200);
     }
+
+    public function getHealthDataByUser($userId)
+    {
+        $healthData = HealthData::where('user_id', $userId)->first();
+
+        if (!$healthData) {
+            return response()->json(['message' => 'Health data not found.'], 404);
+        }
+
+        return new HealthDataResource($healthData);
+    }
+
 }

@@ -34,6 +34,7 @@ Route::prefix('v1')->group(function () {
         Route::get('health-data/{healthData}', [HealthDataController::class, 'show'])->middleware('throttle:20,1');
         Route::put('health-data/{healthData}', [HealthDataController::class, 'update'])->middleware('throttle:10,1');
         Route::delete('health-data/{healthData}', [HealthDataController::class, 'destroy'])->middleware('throttle:5,1');
+        Route::get('user-health-data/{userId}', [HealthDataController::class, 'getHealthDataByUser']);
 
         // Admin-specific routes
         Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {

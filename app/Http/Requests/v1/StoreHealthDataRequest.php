@@ -23,7 +23,7 @@ class StoreHealthDataRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'height' => 'required|numeric|min:1|max:2.5',
+            'height' => 'required|numeric|min:1|max:2.72',
             'weight_goal' => 'required|in:gain,lose,maintain',
         ];
     }
@@ -37,7 +37,7 @@ class StoreHealthDataRequest extends FormRequest
     {
         return [
             'height.min' => 'The height must be at least 1 meter.',
-            'height.max' => 'The height must be at most 2.5 meters.',
+            'height.max' => 'The height must be at most 2.72 meters.',
             'weight_goal.in' => 'The weight_goal must be one of: gain, lose, maintain.',
         ];
     }
