@@ -33,19 +33,32 @@ class UpdateWeightLogRequest extends FormRequest
     public function withValidator($validator): void
     {
         $validator->after(function ($validator) {
-
             $user = $this->user();
             $loggedAt = Carbon::parse($this->input('logged_at'));
+            $timeOfDay = $this->input('time_of_day');
 
-            // Check if another weight log exists for the same day and time_of_day
-            $existingWeightLog = $user->weightLogs()
+            // Validate time range for time_of_day
+            $hour = $loggedAt->hour;
+
+            if ($timeOfDay === 'morning' && ($hour < 6 || $hour > 11)) {
+                $submittedTime = $loggedAt->format('g:i A');
+                $validator->errors()->add('logged_at', "The logged_at time ({$submittedTime}) does not match the morning time range (6:00 AM - 11:59 AM).");
+            }
+
+            if ($timeOfDay === 'evening' && ($hour < 17 || $hour > 21)) {
+                $submittedTime = $loggedAt->format('g:i A');
+                $validator->errors()->add('logged_at', "The logged_at time ({$submittedTime}) does not match the evening time range (5:00 PM - 9:59 PM).");
+            }
+
+            // Check for duplicate entries
+            $existingLog = $user->weightLogs()
                 ->whereDate('logged_at', $loggedAt->toDateString())
-                ->where('time_of_day', $this->input('time_of_day'))
-                ->where('id', '!=', $this->weightLog->id) // Exclude the current weight log
+                ->where('time_of_day', $timeOfDay)
+                ->where('id', '!=', $this->weightLog->id) // Exclude the current log being updated
                 ->first();
 
-            if ($existingWeightLog) {
-                $validator->errors()->add('logged_at', 'Another weight log already exists for this time of day.');
+            if ($existingLog) {
+                $validator->errors()->add('time_of_day', "Another weight log already exists for the {$timeOfDay} today.");
             }
         });
     }

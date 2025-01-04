@@ -36,24 +36,37 @@ class StoreWeightLogRequest extends FormRequest
      *
      * @return array<string, string>
      */
-    public function withValidator(Validator $validator)
+    public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $loggedAt = $this->input('logged_at');
+            $user = $this->user();
+            $loggedAt = Carbon::parse($this->input('logged_at'));
             $timeOfDay = $this->input('time_of_day');
 
-            $hour = Carbon::parse($loggedAt)->hour;
+            // Check if the logged_at time matches the specified time_of_day range
+            $hour = $loggedAt->hour;
 
             if ($timeOfDay === 'morning' && ($hour < 6 || $hour > 11)) {
-                $submittedTime = Carbon::parse($loggedAt)->format('g:i A');
+                $submittedTime = $loggedAt->format('g:i A');
                 $validator->errors()->add('logged_at', "The logged_at time ({$submittedTime}) does not match the morning time range (6:00 AM - 11:59 AM).");
             }
 
             if ($timeOfDay === 'evening' && ($hour < 17 || $hour > 21)) {
-                $submittedTime = Carbon::parse($loggedAt)->format('g:i A');
-                $validator->errors()->add('logged_at', 'The logged_at time does not match the evening time range (5:00 PM - 9:59 PM).');
+                $submittedTime = $loggedAt->format('g:i A');
+                $validator->errors()->add('logged_at', "The logged_at time ({$submittedTime}) does not match the evening time range (5:00 PM - 9:59 PM).");
+            }
+
+            // Check if the user already logged weight for the same time_of_day
+            $existingLog = $user->weightLogs()
+                ->whereDate('logged_at', $loggedAt->toDateString())
+                ->where('time_of_day', $timeOfDay)
+                ->first();
+
+            if ($existingLog) {
+                $validator->errors()->add('time_of_day', "You have already logged your weight for the {$timeOfDay} today.");
             }
         });
+
     }
 
     public function bodyParameters(): array

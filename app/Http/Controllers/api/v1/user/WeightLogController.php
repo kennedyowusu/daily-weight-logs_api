@@ -128,8 +128,6 @@ class WeightLogController extends Controller
             abort(403);
         }
 
-        $request->user();
-
         $weightLog->update($request->validated());
         return new WeightLogResource($weightLog);
     }
