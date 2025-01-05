@@ -3,7 +3,6 @@
 namespace App\Http\Requests\v1;
 
 use Carbon\Carbon;
-use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 
@@ -27,11 +26,20 @@ class StoreWeightLogRequest extends FormRequest
         return [
             'weight' => 'required|numeric|min:30|max:300',
             'time_of_day' => 'required|in:morning,evening',
-            'logged_at' => ['required|date', function ($value, $fail) {
-                if (!Carbon::parse($value)->isToday()) {
-                    $fail('The Date must be today.');
-                }
-            }],
+            'logged_at' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    // Extract only the date portion of logged_at
+                    $loggedAtDate = Carbon::parse($value)->toDateString();
+                    $today = now()->toDateString();
+
+                    // Check if logged_at is not today's date
+                    if ($loggedAtDate !== $today) {
+                        $fail("The $attribute must be today's date.");
+                    }
+                },
+            ],
         ];
     }
 
@@ -70,7 +78,6 @@ class StoreWeightLogRequest extends FormRequest
                 $validator->errors()->add('time_of_day', "You have already logged your weight for the {$timeOfDay} today.");
             }
         });
-
     }
 
     public function bodyParameters(): array
