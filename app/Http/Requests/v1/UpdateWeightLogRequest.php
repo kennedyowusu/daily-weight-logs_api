@@ -26,7 +26,11 @@ class UpdateWeightLogRequest extends FormRequest
         return [
             'weight' => 'required|numeric|min:30|max:300',
             'time_of_day' => 'required|in:morning,evening',
-            'logged_at' => 'required|date',
+            'logged_at' => ['required|date', function ($value, $fail) {
+                if (!Carbon::parse($value)->isToday()) {
+                    $fail('The Date must be today.');
+                }
+            }],
         ];
     }
 
