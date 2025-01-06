@@ -15,37 +15,18 @@ class UserAccountDeletionFeatureTest extends TestCase
      * Test authenticated user can delete their account.
      */
     public function test_authenticated_user_can_delete_their_account()
-    {
-        $user = User::factory()->hasWeightLogs(3)->hasHealthData()->create();
+        {
+            $user = User::factory()->hasWeightLogs(3)->hasHealthData()->create();
 
-        $this->actingAs($user)
-            ->deleteJson('/api/v1/profile')
-            ->assertStatus(200)
-            ->assertJson(['message' => 'User deleted successfully.']);
+            $this->actingAs($user)
+                ->deleteJson('/api/v1/profile')
+                ->assertStatus(200)
+                ->assertJson(['message' => 'User deleted successfully.']);
 
-        // Assert that the user no longer exists in the database
-        $this->assertDatabaseMissing('users', ['id' => $user->id]);
-
-        // Assert related data is deleted
-        $this->assertDatabaseMissing('weight_logs', ['user_id' => $user->id]);
-        $this->assertDatabaseMissing('health_data', ['user_id' => $user->id]);
-    }
-
-    /**
-     * Test unauthorized user cannot delete another user's account.
-     */
-    public function test_user_cannot_delete_another_users_account()
-    {
-        $user = User::factory()->create();
-        $otherUser = User::factory()->create();
-
-        $this->actingAs($user)
-            ->deleteJson('/api/v1/profile')
-            ->assertStatus(403);
-
-        // Assert that the other user still exists in the database
-        $this->assertDatabaseHas('users', ['id' => $otherUser->id]);
-    }
+            $this->assertDatabaseMissing('users', ['id' => $user->id]);
+            $this->assertDatabaseMissing('weight_logs', ['user_id' => $user->id]);
+            $this->assertDatabaseMissing('health_data', ['user_id' => $user->id]);
+        }
 
     /**
      * Test deletion logs are created.

@@ -79,12 +79,12 @@ class UserController extends Controller
             'user_agent' => $request->userAgent(),
         ]);
 
-        // Delete related data
+        // Delete related data and user
         DB::transaction(function () use ($user) {
             $user->weightLogs()->delete();
             $user->healthData()->delete();
+            $user->forceDelete(); // Ensure hard delete
             event(new UserDeleted($user));
-            $user->delete();
         });
 
         return response()->json(['message' => 'User deleted successfully.'], 200);
