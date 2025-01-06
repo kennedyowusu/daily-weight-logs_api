@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\api\v1\user;
 
+use App\Events\UserDeleted;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\v1\UpdateUserRequest;
 use App\Http\Resources\v1\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group User
@@ -67,7 +70,23 @@ class UserController extends Controller
             abort(403);
         }
 
-        $user->delete();
+        // Log the deletion event
+        Log::info('User account deleted', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'deleted_at' => now()->toDateTimeString(),
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
+        // Delete related data
+        DB::transaction(function () use ($user) {
+            $user->weightLogs()->delete();
+            $user->healthData()->delete();
+            event(new UserDeleted($user));
+            $user->delete();
+        });
+
         return response()->json(['message' => 'User deleted successfully.'], 200);
     }
 }
