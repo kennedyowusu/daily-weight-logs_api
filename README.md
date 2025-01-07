@@ -98,4 +98,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 Kennedy Owusu
 GitHub: [kennedyowusu](https://github.com/kennedyowusu)
 
-API Documentation: [dexwin.kennedyowusu.com](https://dexwin.kennedyowusu.com/public/docs/)
+API Documentation: [weightlogapi.kennedyowusu.com](https://weightlogapi.kennedyowusu.com/public/docs/)
